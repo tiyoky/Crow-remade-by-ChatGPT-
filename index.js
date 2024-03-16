@@ -2,6 +2,8 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const { prefix, token } = require('./config.json');
 
+let welcomeChannelId = null;
+
 client.once('ready', () => {
     console.log('Bot is ready!');
 });
@@ -76,6 +78,33 @@ client.on('message', message => {
         } else {
             message.channel.send("Merci de mentionner l'utilisateur à kick.");
         }
+
+    } else if (command === 'setbienvenue') {
+        // Vérifie que l'utilisateur a la permission de gérer le serveur
+        if (!message.member.hasPermission('MANAGE_GUILD')) {
+            return message.channel.send("Vous n'avez pas la permission de gérer le serveur.");
+        }
+
+        // Vérifie si le salon a été mentionné
+        const channel = message.mentions.channels.first();
+        if (!channel) {
+            return message.channel.send("Merci de mentionner un salon valide.");
+        }
+
+        // Met à jour l'ID du salon de bienvenue
+        welcomeChannelId = channel.id;
+        message.channel.send(`Le salon de bienvenue a été défini sur ${channel}.`);
+
+    } else if (command === 'disbienvenue') {
+        // Vérifie que l'utilisateur a la permission de gérer le serveur
+        if (!message.member.hasPermission('MANAGE_GUILD')) {
+            return message.channel.send("Vous n'avez pas la permission de gérer le serveur.");
+        }
+
+        // Désactive la fonction de bienvenue
+        welcomeChannelId = null;
+        message.channel.send("La fonction de bienvenue a été désactivée.");
+        
     } else if (command === 'help') {
         const embed1 = new Discord.MessageEmbed()
             .setTitle('modération')
@@ -147,6 +176,17 @@ client.on('message', message => {
                 console.error('Erreur lors de la récupération des bannissements:', error);
                 message.channel.send("Une erreur s'est produite lors de la récupération des bannissements.");
             });
+    }
+});
+
+client.on('guildMemberAdd', member => {
+    if (welcomeChannelId) {
+        const channel = member.guild.channels.cache.get(welcomeChannelId);
+        if (channel) {
+            const memberCount = member.guild.memberCount;
+            const welcomeMessage = `Bienvenue à ${member}, nous sommes maintenant ${memberCount} dans le serveur !`;
+            channel.send(welcomeMessage);
+        }
     }
 });
 
