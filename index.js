@@ -21,7 +21,6 @@ client.on('guildCreate', async guild => {
     }
 });
 
-
 client.on('guildDelete', guild => {
     const owner = client.users.cache.get(guild.ownerID);
     if (owner) {
