@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const { prefix, token, ownerID } = require('./config.json');
+const fetch = require('node-fetch');
 
 let welcomeChannelId = null;
 
@@ -183,8 +184,6 @@ client.on('message', async message => {
             .addField(`${prefix}serverlist`, 'Affiche les serveurs que le bot est dedans.')
             .setColor('#0099ff');
 
-        
-
         message.channel.send(embed1).then(embedMessage => {
             embedMessage.react('➡️');
 
@@ -315,10 +314,6 @@ client.on('message', async message => {
                 message.channel.send(`❌ Aucun participant n'a réagi au giveaway "${prize}". ❌`);
             }
         });
-    }
-});
-
-
     } else if (command === 'setstatus') {
         if (message.author.id !== ownerID) {
             return message.channel.send("Seul le propriétaire du bot peut changer son statut.");
@@ -335,7 +330,8 @@ client.on('message', async message => {
         const serverList = client.guilds.cache.map(guild => `${guild.name} - ${guild.memberCount} membres`);
         message.channel.send(`Liste des serveurs :\n${serverList.join('\n')}`);
     }
-});   
+});
+
 client.on('guildMemberAdd', member => {
     if (welcomeChannelId) {
         const channel = member.guild.channels.cache.get(welcomeChannelId);
