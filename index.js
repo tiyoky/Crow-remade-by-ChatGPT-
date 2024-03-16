@@ -16,6 +16,12 @@ client.on('guildCreate', guild => {
     }
 });
 
+client.on('guildDelete', guild => {
+    const owner = client.users.cache.get(guild.ownerID);
+    if (owner) {
+        owner.send(`Le bot ${client.user.tag} a quitté le serveur ${guild.name}.`);
+    }
+});
 
 
 client.on('message', async message => {
