@@ -111,7 +111,7 @@ client.on('message', message => {
             .addField(`${prefix}ban <@utilisateur>`, 'Bannit l\'utilisateur mentionné.')
             .addField(`${prefix}mute <@utilisateur> <durée>`, 'Mute l\'utilisateur pour une durée spécifiée.')
             .addField(`${prefix}kick <@utilisateur>`, 'Kick l\'utilisateur mentionné.')
-            .setColor('#0099ff');
+            .setColor('#00FF00');
         
         const embed2 = new Discord.MessageEmbed()
             .setTitle('gestion')
@@ -119,7 +119,7 @@ client.on('message', message => {
             .addField(`${prefix}create <emoji>`, 'créer L emojie choisi dans le message')
             .addField(`${prefix}setbienvenue <le salon>`, 'active le message de bienvenue quand quelqun rejoin le serveur')
             .addField(`${prefix}disbienvenue `, 'desactive le message de bienvenue quand quelqun rejoin le serveur')
-            .setColor('#0099ff');
+            .setColor('#00FF00');
         
         message.channel.send(embed1).then(embedMessage => {
             embedMessage.react('➡️'); // Ajouter une réaction pour naviguer vers la deuxième page
