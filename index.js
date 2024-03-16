@@ -118,7 +118,7 @@ client.on('message', message => {
             .setDescription(`Autres commandes`)
             .addField(`${prefix}create <emoji>`, 'créer L emojie choisi dans le message')
             .addField(`${prefix}setbienvenue <le salon>`, 'active le message de bienvenue quand quelqun rejoin le serveur')
-            .addField(`${prefix}disbienvenue`, 'desactive le message de bienvenue quand quelqun rejoin le serveur')
+            .addField(`${prefix}disbienvenue `, 'desactive le message de bienvenue quand quelqun rejoin le serveur')
             .setColor('#00FF00');
 
         const embed3 = new Discord.MessageEmbed()
