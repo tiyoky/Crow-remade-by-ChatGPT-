@@ -211,6 +211,36 @@ client.on('message', async message => {
                 console.error('Erreur lors de la récupération des bannissements:', error);
                 message.channel.send("Une erreur s'est produite lors de la récupération des bannissements.");
             });
+    } else if (command === 'kissorkill') {
+        if (!message.member.hasPermission('MANAGE_GUILD')) {
+            return message.channel.send("Vous n'avez pas la permission de gérer le serveur.");
+        }
+
+        // Récupérer une image d'anime aléatoire depuis l'API
+        fetch('https://api.waifu.pics/sfw/kiss')
+            .then(response => response.json())
+            .then(data => {
+                const animeImageUrl = data.url;
+
+                // Envoyer l'image dans le salon
+                const embed = new Discord.MessageEmbed()
+                    .setTitle('Kiss or Kill ?')
+                    .setImage(animeImageUrl)
+                    .setColor('#0099ff')
+                    .setDescription('Réagissez avec 🔪 pour "Kill" ou 💋 pour "Kiss".');
+
+                message.channel.send(embed)
+                    .then(sentMessage => {
+                        sentMessage.react('🔪')
+                            .then(() => sentMessage.react('💋'))
+                            .catch(err => console.error('Error reacting:', err));
+                    })
+                    .catch(err => console.error('Error sending message:', err));
+            })
+            .catch(error => {
+                console.error('Error fetching anime image:', error);
+                message.channel.send("Une erreur s'est produite lors de la récupération de l'image d'anime.");
+            });
     }
 });
 
