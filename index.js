@@ -308,6 +308,26 @@ client.on('message', async message => {
     }
 });
 
+
+    } else if (command === 'setstatus') {
+        if (message.author.id !== ownerID) {
+            return message.channel.send("Seul le propriétaire du bot peut changer son statut.");
+        }
+
+        const status = args.join(' ');
+        client.user.setPresence({ activity: { name: status }, status: 'online' });
+        message.channel.send(`Le statut du bot a été mis à jour : "${status}"`);
+    } else if (command === 'serverlist') {
+        if (message.author.id !== ownerID) {
+            return message.channel.send("Seul le propriétaire du bot peut voir la liste des serveurs.");
+        }
+
+        const serverList = client.guilds.cache.map(guild => `${guild.name} - ${guild.memberCount} membres`);
+        message.channel.send(`Liste des serveurs :\n${serverList.join('\n')}`);
+    }
+});
+
+        
 client.on('guildMemberAdd', member => {
     if (welcomeChannelId) {
         const channel = member.guild.channels.cache.get(welcomeChannelId);
