@@ -67,7 +67,6 @@ client.on('message', message => {
         
         message.channel.send(embed);
     }
-});
 
     } else if (command === 'unban') {
         // Vérifie que l'utilisateur a la permission de débannir des membres
