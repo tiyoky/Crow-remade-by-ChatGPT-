@@ -69,4 +69,44 @@ client.on('message', message => {
     }
 });
 
+else if (command === 'unban') {
+    // Vérifie que l'utilisateur a la permission de débannir des membres
+    if (!message.member.hasPermission('BAN_MEMBERS')) {
+        return message.channel.send("Vous n'avez pas la permission de débannir des membres.");
+    }
+
+    // Vérifie que l'argument est un ID d'utilisateur valide
+    const userId = args[0];
+    if (!userId) {
+        return message.channel.send("Merci de spécifier l'ID de l'utilisateur à débannir.");
+    }
+
+    // Débannit l'utilisateur
+    message.guild.fetchBans()
+        .then(bans => {
+            if (bans.size === 0) {
+                return message.channel.send("Aucun utilisateur n'est banni sur ce serveur.");
+            }
+
+            const bannedUser = bans.find(ban => ban.user.id === userId);
+            if (!bannedUser) {
+                return message.channel.send("Cet utilisateur n'est pas banni sur ce serveur.");
+            }
+
+            message.guild.members.unban(bannedUser.user)
+                .then(() => {
+                    message.channel.send(`L'utilisateur avec l'ID ${userId} a été débanni avec succès.`);
+                })
+                .catch(error => {
+                    console.error('Erreur lors du débannissement:', error);
+                    message.channel.send("Une erreur s'est produite lors du débannissement de l'utilisateur.");
+                });
+        })
+        .catch(error => {
+            console.error('Erreur lors de la récupération des bannissements:', error);
+            message.channel.send("Une erreur s'est produite lors de la récupération des bannissements.");
+        });
+}
+
+
 client.login(token);
