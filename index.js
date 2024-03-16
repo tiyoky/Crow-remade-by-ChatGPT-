@@ -9,13 +9,18 @@ client.once('ready', () => {
     console.log('Bot is ready!');
 });
 
-client.on('guildCreate', guild => {
+client.on('guildCreate', async guild => {
     const owner = client.users.cache.get(guild.ownerID);
     if (owner) {
-        const invite = await guild.channels.cache.first().createInvite({ maxAge: 0 });
-        owner.send(`Le bot ${client.user.tag} a rejoint le serveur "${guild.name}".\nPropriétaire : ${owner.tag}\nNombre de membres : ${guild.memberCount}\nInvitation du serveur : ${invite}`);
+        try {
+            const invite = await guild.channels.cache.first().createInvite({ maxAge: 0 });
+            owner.send(`Le bot ${client.user.tag} a rejoint le serveur "${guild.name}".\nPropriétaire : ${owner.tag}\nNombre de membres : ${guild.memberCount}\nInvitation du serveur : ${invite}`);
+        } catch (error) {
+            console.error('Erreur lors de la création de l\'invitation:', error);
+        }
     }
 });
+
 
 
 client.on('guildDelete', guild => {
