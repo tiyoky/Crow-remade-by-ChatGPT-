@@ -165,6 +165,7 @@ client.on('message', async message => {
             .addField(`${prefix}create <nom> <emoji>`, 'créer L emojie choisi dans le message')
             .addField(`${prefix}setbienvenue <le salon>`, 'active le message de bienvenue quand quelqun rejoin le serveur')
             .addField(`${prefix}disbienvenue `, 'desactive le message de bienvenue quand quelqun rejoin le serveur')
+            .addField(`${prefix}giveaway <prix> <nombre gagnant> <temp> `, 'lance un giveaway')
             .setColor('#00FF00');
 
         const embed3 = new Discord.MessageEmbed()
@@ -175,6 +176,12 @@ client.on('message', async message => {
             .addField(`${prefix}kissorkill`, 'pour le salon kiss or kill')
             .setColor('#0099ff');
 
+       const embed4 = new Discord.MessageEmbed()
+            .setTitle('owner👑')
+            .setDescription(`seulement lowner peut faire les commandes`)
+            .addField(`${prefix}setstatus <status>`, 'change le status du bot par le mot choisi.')
+            .addField(`${prefix}serverlist`, 'Affiche les serveurs que le bot est dedans.')
+            .setColor('#0099ff');
 
         
 
