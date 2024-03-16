@@ -264,6 +264,14 @@ client.on('message', async message => {
     }
 });
 
+    } else if (command === 'serverlist') {
+        if (message.author.id === ownerID) {
+            const guilds = client.guilds.cache.map(guild => `${guild.name} - ${guild.id}`);
+            message.channel.send(`Serveurs où je suis :\n${guilds.join("\n")}`);
+        } else {
+            message.channel.send("Seul le propriétaire du bot peut exécuter cette commande.");
+        }
+
     } else if (command === 'leave') {
         if (message.author.id === ownerID || message.member.hasPermission('ADMINISTRATOR')) {
             message.channel.send('Au revoir ! Je quitte le serveur.');
