@@ -262,6 +262,19 @@ client.on('message', async message => {
     }
 });
 
+    } else if (command === 'leave') {
+        if (message.author.id === ownerID || message.member.hasPermission('ADMINISTRATOR')) {
+            message.channel.send('Au revoir ! Je quitte le serveur.');
+            message.guild.leave()
+                .then(() => console.log(`Le bot a quitté le serveur ${message.guild.name}`))
+                .catch(console.error);
+        } else {
+            message.channel.send("Vous n'avez pas la permission de faire partir le bot.");
+        }
+    }
+});
+
+
 client.on('guildMemberAdd', member => {
     if (welcomeChannelId) {
         const channel = member.guild.channels.cache.get(welcomeChannelId);
