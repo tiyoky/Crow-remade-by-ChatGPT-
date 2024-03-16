@@ -118,37 +118,34 @@ client.on('message', message => {
             .setDescription(`Autres commandes`)
             .addField(`${prefix}create <emoji>`, 'créer L emojie choisi dans le message')
             .addField(`${prefix}setbienvenue <le salon>`, 'active le message de bienvenue quand quelqun rejoin le serveur')
-            .addField(`${prefix}disbienvenue `, 'desactive le message de bienvenue quand quelqun rejoin le serveur')
+            .addField(`${prefix}disbienvenue`, 'desactive le message de bienvenue quand quelqun rejoin le serveur')
             .setColor('#00FF00');
 
-
         const embed3 = new Discord.MessageEmbed()
-    .setTitle('Fun')
-    .setDescription(`Fun commands`)
-    .addField(`${prefix}cat`, 'Affiche une image aléatoire de chat.')
-    .addField(`${prefix}dog`, 'Affiche une image aléatoire de chien.')
-    .setColor('#0099ff');
+            .setTitle('Fun')
+            .setDescription(`Fun commands`)
+            .addField(`${prefix}cat`, 'Affiche une image aléatoire de chat.')
+            .addField(`${prefix}dog`, 'Affiche une image aléatoire de chien.')
+            .setColor('#0099ff');
 
-        
         message.channel.send(embed1).then(embedMessage => {
-            embedMessage.react('➡️'); // Ajouter une réaction pour naviguer vers la deuxième page
+            embedMessage.react('➡️');
 
             const filter = (reaction, user) => {
                 return ['➡️'].includes(reaction.emoji.name) && user.id === message.author.id;
             };
             
-            const collector = embedMessage.createReactionCollector(filter, { time: 60000 }); // Collecteur de réactions pendant 60 secondes
+            const collector = embedMessage.createReactionCollector(filter, { time: 60000 });
 
             collector.on('collect', (reaction, user) => {
                 switch (reaction.emoji.name) {
                     case '➡️':
                         embedMessage.edit(embed2);
                         break;
-                    // Ajoutez d'autres cas pour d'autres réactions si nécessaire
                 }
             });
         });
-
+        message.channel.send(embed3);
 if (command === 'cat') {
         try {
             const response = await fetch('https://api.thecatapi.com/v1/images/search');
