@@ -76,7 +76,7 @@ client.on('message', message => {
         } else {
             message.channel.send("Merci de mentionner l'utilisateur à kick.");
         }
-if (command === 'help') {
+    } else if (command === 'help') {
         const embed1 = new Discord.MessageEmbed()
             .setTitle('modération')
             .setDescription(`Commandes de modération`)
@@ -110,9 +110,6 @@ if (command === 'help') {
                 }
             });
         });
-    }
-});
-
     } else if (command === 'unban') {
         // Vérifie que l'utilisateur a la permission de débannir des membres
         if (!message.member.hasPermission('BAN_MEMBERS')) {
