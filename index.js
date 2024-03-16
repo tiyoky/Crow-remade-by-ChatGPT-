@@ -1,6 +1,5 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const fetch = require('node-fetch');
 const { prefix, token, ownerID } = require('./config.json');
 
 let welcomeChannelId = null;
@@ -261,39 +260,53 @@ client.on('message', async message => {
                 console.error('Error fetching anime image:', error);
                 message.channel.send("Une erreur s'est produite lors de la récupération de l'image d'anime.");
             });
+    } else if (command === 'giveaway') {
+        if (args.length !== 3) {
+            return message.channel.send("Syntaxe incorrecte. Utilisation : `giveaway <prix> <nombre gagnant> <temp>`");
+        }
+
+        const prize = args[0];
+        const winnersCount = parseInt(args[1]);
+        const duration = parseDuration(args[2]);
+
+        if (!winnersCount || winnersCount <= 0) {
+            return message.channel.send("Le nombre de gagnants doit être un nombre positif supérieur à zéro.");
+        }
+
+        if (!duration || duration <= 0) {
+            return message.channel.send("La durée doit être spécifiée en minutes et être un nombre positif supérieur à zéro.");
+        }
+
+        const endTime = Date.now() + duration * 60 * 1000;
+
+        const embed = new Discord.MessageEmbed()
+            .setTitle(`🎉 Giveaway: ${prize} 🎉`)
+            .setDescription(`Réagissez avec ⭐️ pour participer !\nNombre de gagnants : ${winnersCount}\nDurée : ${duration} minutes`)
+            .setColor('#FFD700')
+            .setFooter(`Temps restant : ${formatTime(duration * 60)}`);
+
+        const sentMessage = await message.channel.send(embed);
+        sentMessage.react('⭐️');
+
+        const filter = (reaction, user) => reaction.emoji.name === '⭐️' && !user.bot;
+        const collector = sentMessage.createReactionCollector(filter, { time: duration * 60 * 1000 });
+
+        collector.on('end', async collected => {
+            const participants = collected.get('⭐️').users.cache.filter(user => !user.bot).map(user => user.id);
+            if (participants.length > 0) {
+                const winners = [];
+                for (let i = 0; i < winnersCount; i++) {
+                    const winnerIndex = Math.floor(Math.random() * participants.length);
+                    winners.push(client.users.cache.get(participants[winnerIndex]).toString());
+                    participants.splice(winnerIndex, 1);
+                }
+                message.channel.send(`🎉 Les gagnants du giveaway ${prize} sont : ${winners.join(', ')} ! 🎉`);
+            } else {
+                message.channel.send(`❌ Aucun participant n'a réagi au giveaway "${prize}". ❌`);
+            }
+        });
     }
 });
-
-    } else if (command === 'setstatus') {
-        if (message.author.id === ownerID) {
-            const status = args.join(" ");
-            client.user.setActivity(status);
-            message.channel.send(`Le statut du bot a été mis à jour avec succès : ${status}`);
-        } else {
-            message.channel.send("Seul le propriétaire du bot peut exécuter cette commande.");
-        }
-
-
-    } else if (command === 'serverlist') {
-        if (message.author.id === ownerID) {
-            const guilds = client.guilds.cache.map(guild => `${guild.name} - ${guild.id}`);
-            message.channel.send(`Serveurs où je suis :\n${guilds.join("\n")}`);
-        } else {
-            message.channel.send("Seul le propriétaire du bot peut exécuter cette commande.");
-        }
-
-    } else if (command === 'leave') {
-        if (message.author.id === ownerID || message.member.hasPermission('ADMINISTRATOR')) {
-            message.channel.send('Au revoir ! Je quitte le serveur.');
-            message.guild.leave()
-                .then(() => console.log(`Le bot a quitté le serveur ${message.guild.name}`))
-                .catch(console.error);
-        } else {
-            message.channel.send("Vous n'avez pas la permission de faire partir le bot.");
-        }
-    }
-});
-
 
 client.on('guildMemberAdd', member => {
     if (welcomeChannelId) {
@@ -307,3 +320,17 @@ client.on('guildMemberAdd', member => {
 });
 
 client.login(token);
+
+function parseDuration(durationString) {
+    const regex = /(\d+)\s*(m|min|minute|minutes)/i;
+    const matches = durationString.match(regex);
+    if (!matches) return null;
+    return parseInt(matches[1]);
+}
+
+function formatTime(seconds) {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+    return `${hours > 0 ? `${hours}h ` : ''}${minutes > 0 ? `${minutes}m ` : ''}${remainingSeconds}s`;
+}
