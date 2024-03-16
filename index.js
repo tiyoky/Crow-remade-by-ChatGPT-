@@ -120,6 +120,15 @@ client.on('message', message => {
             .addField(`${prefix}setbienvenue <le salon>`, 'active le message de bienvenue quand quelqun rejoin le serveur')
             .addField(`${prefix}disbienvenue `, 'desactive le message de bienvenue quand quelqun rejoin le serveur')
             .setColor('#00FF00');
+
+
+        const embed3 = new Discord.MessageEmbed()
+    .setTitle('Fun')
+    .setDescription(`Fun commands`)
+    .addField(`${prefix}cat`, 'Affiche une image aléatoire de chat.')
+    .addField(`${prefix}dog`, 'Affiche une image aléatoire de chien.')
+    .setColor('#0099ff');
+
         
         message.channel.send(embed1).then(embedMessage => {
             embedMessage.react('➡️'); // Ajouter une réaction pour naviguer vers la deuxième page
