@@ -52,34 +52,31 @@ client.on('message', message => {
         } else {
             message.channel.send("Merci de mentionner l'utilisateur à bannir.");
         }
-} else if (command === 'kick') {
-    // Vérifie que l'utilisateur a la permission de kicker des membres
-    if (!message.member.hasPermission('KICK_MEMBERS')) {
-        return message.channel.send("Vous n'avez pas la permission de kicker des membres.");
-    }
-
-    // Vérifie si l'utilisateur mentionne un membre à kicker
-    const user = message.mentions.users.first();
-    if (user) {
-        const member = message.guild.member(user);
-        if (member) {
-            // Kicke le membre
-            member.kick('Raison optionnelle').then(() => {
-                message.reply(`${user.tag} a été kické avec succès.`);
-            }).catch(err => {
-                console.error('Erreur lors du kick:', err);
-                message.channel.send("Une erreur s'est produite lors du kick de l'utilisateur.");
-            });
-        } else {
-            message.channel.send("Cet utilisateur n'est pas sur le serveur.");
-        }
-    } else {
-        message.channel.send("Merci de mentionner l'utilisateur à kick.");
-    }
-}
-
     } else if (command === 'kick') {
-        // Votre code pour la commande     } else if (command === 'help') {
+        // Vérifie que l'utilisateur a la permission de kicker des membres
+        if (!message.member.hasPermission('KICK_MEMBERS')) {
+            return message.channel.send("Vous n'avez pas la permission de kicker des membres.");
+        }
+
+        // Vérifie si l'utilisateur mentionne un membre à kicker
+        const user = message.mentions.users.first();
+        if (user) {
+            const member = message.guild.member(user);
+            if (member) {
+                // Kicke le membre
+                member.kick('Raison optionnelle').then(() => {
+                    message.reply(`${user.tag} a été kické avec succès.`);
+                }).catch(err => {
+                    console.error('Erreur lors du kick:', err);
+                    message.channel.send("Une erreur s'est produite lors du kick de l'utilisateur.");
+                });
+            } else {
+                message.channel.send("Cet utilisateur n'est pas sur le serveur.");
+            }
+        } else {
+            message.channel.send("Merci de mentionner l'utilisateur à kick.");
+        }
+    } else if (command === 'help') {
         const embed = new Discord.MessageEmbed()
             .setTitle('Liste des commandes')
             .addField(`${prefix}create <emoji>`, 'Crée un emoji dans le serveur.')
