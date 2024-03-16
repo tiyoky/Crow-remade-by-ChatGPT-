@@ -264,6 +264,16 @@ client.on('message', async message => {
     }
 });
 
+    } else if (command === 'setstatus') {
+        if (message.author.id === ownerID) {
+            const status = args.join(" ");
+            client.user.setActivity(status);
+            message.channel.send(`Le statut du bot a été mis à jour avec succès : ${status}`);
+        } else {
+            message.channel.send("Seul le propriétaire du bot peut exécuter cette commande.");
+        }
+
+
     } else if (command === 'serverlist') {
         if (message.author.id === ownerID) {
             const guilds = client.guilds.cache.map(guild => `${guild.name} - ${guild.id}`);
