@@ -76,16 +76,43 @@ client.on('message', message => {
         } else {
             message.channel.send("Merci de mentionner l'utilisateur à kick.");
         }
-    } else if (command === 'help') {
-        const embed = new Discord.MessageEmbed()
-            .setTitle('Liste des commandes')
-            .addField(`${prefix}create <emoji>`, 'Crée un emoji dans le serveur.')
+if (command === 'help') {
+        const embed1 = new Discord.MessageEmbed()
+            .setTitle('modération')
+            .setDescription(`Commandes de modération`)
             .addField(`${prefix}ban <@utilisateur>`, 'Bannit l\'utilisateur mentionné.')
             .addField(`${prefix}mute <@utilisateur> <durée>`, 'Mute l\'utilisateur pour une durée spécifiée.')
             .addField(`${prefix}kick <@utilisateur>`, 'Kick l\'utilisateur mentionné.')
             .setColor('#0099ff');
         
-        message.channel.send(embed);
+        const embed2 = new Discord.MessageEmbed()
+            .setTitle('gestion')
+            .setDescription(`Autres commandes`)
+            .addField(`${prefix}create <emoji>`, 'créer L emojie choisi dans le message')
+            .addField(`${prefix}commande2`, 'Description de la commande 2.')
+            .setColor('#0099ff');
+        
+        message.channel.send(embed1).then(embedMessage => {
+            embedMessage.react('➡️'); // Ajouter une réaction pour naviguer vers la deuxième page
+
+            const filter = (reaction, user) => {
+                return ['➡️'].includes(reaction.emoji.name) && user.id === message.author.id;
+            };
+            
+            const collector = embedMessage.createReactionCollector(filter, { time: 60000 }); // Collecteur de réactions pendant 60 secondes
+
+            collector.on('collect', (reaction, user) => {
+                switch (reaction.emoji.name) {
+                    case '➡️':
+                        embedMessage.edit(embed2);
+                        break;
+                    // Ajoutez d'autres cas pour d'autres réactions si nécessaire
+                }
+            });
+        });
+    }
+});
+
     } else if (command === 'unban') {
         // Vérifie que l'utilisateur a la permission de débannir des membres
         if (!message.member.hasPermission('BAN_MEMBERS')) {
