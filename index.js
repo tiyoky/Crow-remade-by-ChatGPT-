@@ -103,6 +103,9 @@ client.on('message', message => {
         // Désactive la fonction de bienvenue
         welcomeChannelId = null;
         message.channel.send("La fonction de bienvenue a été désactivée.");
+
+
+
         
     } else if (command === 'help') {
         const embed1 = new Discord.MessageEmbed()
@@ -145,38 +148,7 @@ client.on('message', message => {
                 }
             });
         });
-        message.channel.send(embed3);
-if (command === 'cat') {
-        try {
-            const response = await fetch('https://api.thecatapi.com/v1/images/search');
-            const data = await response.json();
-            const imageUrl = data[0].url;
-            const embed = new Discord.MessageEmbed()
-                .setTitle('Random Cat')
-                .setImage(imageUrl)
-                .setColor('#0099ff');
-            message.channel.send(embed);
-        } catch (error) {
-            console.error('Error fetching cat image:', error);
-            message.channel.send("An error occurred while fetching the cat image.");
-        }
-    } else if (command === 'dog') {
-        try {
-            const response = await fetch('https://dog.ceo/api/breeds/image/random');
-            const data = await response.json();
-            const imageUrl = data.message;
-            const embed = new Discord.MessageEmbed()
-                .setTitle('Random Dog')
-                .setImage(imageUrl)
-                .setColor('#0099ff');
-            message.channel.send(embed);
-        } catch (error) {
-            console.error('Error fetching dog image:', error);
-            message.channel.send("An error occurred while fetching the dog image.");
-        }
-    }
-});
-        
+        message.channel.send(embed3);        
     } else if (command === 'unban') {
         // Vérifie que l'utilisateur a la permission de débannir des membres
         if (!message.member.hasPermission('BAN_MEMBERS')) {
