@@ -335,9 +335,7 @@ client.on('message', async message => {
         const serverList = client.guilds.cache.map(guild => `${guild.name} - ${guild.memberCount} membres`);
         message.channel.send(`Liste des serveurs :\n${serverList.join('\n')}`);
     }
-});
-
-        
+});   
 client.on('guildMemberAdd', member => {
     if (welcomeChannelId) {
         const channel = member.guild.channels.cache.get(welcomeChannelId);
