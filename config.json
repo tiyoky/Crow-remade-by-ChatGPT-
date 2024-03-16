@@ -1,4 +1,6 @@
 {
+  "prefix": "+",
   "token": "process.env.TOKEN",
-  "prefix": "+"
+  "ownerID": "ID_de_l_owner_du_bot"
 }
+
