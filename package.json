@@ -1,0 +1,15 @@
+{
+  "name": "tiyoky bot",
+  "version": "1.0.0",
+  "description": "un bot discord",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "TiYoKy",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^13.3.1",
+    "node-fetch": "^3.1.0"
+  }
+}
