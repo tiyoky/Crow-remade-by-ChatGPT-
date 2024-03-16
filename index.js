@@ -154,6 +154,7 @@ client.on('message', async message => {
             .setDescription(`Fun commands`)
             .addField(`${prefix}cat`, 'Affiche une image aléatoire de chat.')
             .addField(`${prefix}dog`, 'Affiche une image aléatoire de chien.')
+            .addField(`${prefix}kissorkill`, 'pour le salon kiss or kill')
             .setColor('#0099ff');
 
         message.channel.send(embed1).then(embedMessage => {
