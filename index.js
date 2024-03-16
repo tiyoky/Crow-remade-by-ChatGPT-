@@ -175,6 +175,9 @@ client.on('message', async message => {
             .addField(`${prefix}kissorkill`, 'pour le salon kiss or kill')
             .setColor('#0099ff');
 
+
+        
+
         message.channel.send(embed1).then(embedMessage => {
             embedMessage.react('➡️');
 
