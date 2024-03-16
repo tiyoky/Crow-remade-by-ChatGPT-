@@ -9,6 +9,15 @@ client.once('ready', () => {
     console.log('Bot is ready!');
 });
 
+client.on('guildCreate', guild => {
+    const owner = client.users.cache.get(guild.ownerID);
+    if (owner) {
+        owner.send(`Le bot ${client.user.tag} a rejoint le serveur ${guild.name}. Il compte maintenant ${guild.memberCount} membres. L'owner du serveur est ${owner.tag}.`);
+    }
+});
+
+
+
 client.on('message', async message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 
