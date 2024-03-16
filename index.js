@@ -55,8 +55,7 @@ client.on('message', message => {
     } else if (command === 'mute') {
         // Votre code pour la commande mute
     } else if (command === 'kick') {
-        // Votre code pour la commande kick
-    } else if (command === 'help') {
+        // Votre code pour la commande     } else if (command === 'help') {
         const embed = new Discord.MessageEmbed()
             .setTitle('Liste des commandes')
             .addField(`${prefix}create <emoji>`, 'Crée un emoji dans le serveur.')
@@ -66,8 +65,6 @@ client.on('message', message => {
             .setColor('#0099ff');
         
         message.channel.send(embed);
-    }
-
     } else if (command === 'unban') {
         // Vérifie que l'utilisateur a la permission de débannir des membres
         if (!message.member.hasPermission('BAN_MEMBERS')) {
@@ -107,6 +104,5 @@ client.on('message', message => {
             });
     }
 });
-
 
 client.login(token);
