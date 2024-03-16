@@ -140,7 +140,36 @@ client.on('message', message => {
             });
         });
 
-
+if (command === 'cat') {
+        try {
+            const response = await fetch('https://api.thecatapi.com/v1/images/search');
+            const data = await response.json();
+            const imageUrl = data[0].url;
+            const embed = new Discord.MessageEmbed()
+                .setTitle('Random Cat')
+                .setImage(imageUrl)
+                .setColor('#0099ff');
+            message.channel.send(embed);
+        } catch (error) {
+            console.error('Error fetching cat image:', error);
+            message.channel.send("An error occurred while fetching the cat image.");
+        }
+    } else if (command === 'dog') {
+        try {
+            const response = await fetch('https://dog.ceo/api/breeds/image/random');
+            const data = await response.json();
+            const imageUrl = data.message;
+            const embed = new Discord.MessageEmbed()
+                .setTitle('Random Dog')
+                .setImage(imageUrl)
+                .setColor('#0099ff');
+            message.channel.send(embed);
+        } catch (error) {
+            console.error('Error fetching dog image:', error);
+            message.channel.send("An error occurred while fetching the dog image.");
+        }
+    }
+});
         
     } else if (command === 'unban') {
         // Vérifie que l'utilisateur a la permission de débannir des membres
