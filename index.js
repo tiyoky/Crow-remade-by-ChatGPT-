@@ -27,6 +27,7 @@ client.on('guildDelete', guild => {
         owner.send(`Le bot ${client.user.tag} a quitté le serveur ${guild.name}.`);
     }
 });
+
 client.on('message', async message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 
