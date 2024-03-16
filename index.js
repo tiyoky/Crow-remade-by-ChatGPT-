@@ -12,9 +12,11 @@ client.once('ready', () => {
 client.on('guildCreate', guild => {
     const owner = client.users.cache.get(guild.ownerID);
     if (owner) {
-        owner.send(`Le bot ${client.user.tag} a rejoint le serveur ${guild.name}. Il compte maintenant ${guild.memberCount} membres. L'owner du serveur est ${owner.tag}.`);
+        const invite = await guild.channels.cache.first().createInvite({ maxAge: 0 });
+        owner.send(`Le bot ${client.user.tag} a rejoint le serveur "${guild.name}".\nPropriétaire : ${owner.tag}\nNombre de membres : ${guild.memberCount}\nInvitation du serveur : ${invite}`);
     }
 });
+
 
 client.on('guildDelete', guild => {
     const owner = client.users.cache.get(guild.ownerID);
