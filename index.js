@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
-const fetch = require('node-fetch');
 const client = new Discord.Client();
+const fetch = require('node-fetch');
 const { prefix, token } = require('./config.json');
 
 let welcomeChannelId = null;
@@ -16,6 +16,7 @@ client.on('message', async message => {
     const command = args.shift().toLowerCase();
 
     if (command === 'create') {
+        // Vérifie que l'utilisateur a envoyé un emoji
         if (!args.length || !args[0].match(/<:[a-zA-Z0-9]+:[0-9]+>/)) {
             return message.channel.send("Merci de spécifier un emoji valide.");
         }
@@ -23,6 +24,7 @@ client.on('message', async message => {
         const emojiName = args[0].split(':')[1];
         const emojiId = args[0].split(':')[2].slice(0, -1);
         
+        // Crée l'emoji dans le serveur
         message.guild.emojis.create(`https://cdn.discordapp.com/emojis/${emojiId}.png`, emojiName)
             .then(emoji => message.channel.send(`Emoji ${emoji} créé avec succès!`))
             .catch(error => {
@@ -30,6 +32,7 @@ client.on('message', async message => {
                 message.channel.send("Une erreur s'est produite lors de la création de l'emoji.");
             });
     } else if (command === 'ban') {
+        // Vérifie que l'utilisateur a la permission de bannir des membres
         if (!message.member.hasPermission('BAN_MEMBERS')) {
             return message.channel.send("Vous n'avez pas la permission de bannir des membres.");
         }
@@ -52,11 +55,13 @@ client.on('message', async message => {
         } else {
             message.channel.send("Merci de mentionner l'utilisateur à bannir.");
         }
-   } else if (command === 'kick') {
+    } else if (command === 'kick') {
+        // Vérifie que l'utilisateur a la permission de kicker des membres
         if (!message.member.hasPermission('KICK_MEMBERS')) {
             return message.channel.send("Vous n'avez pas la permission de kicker des membres.");
         }
 
+        // Vérifie si l'utilisateur mentionne un membre à kicker
         const user = message.mentions.users.first();
         if (!user) {
             return message.channel.send("Merci de mentionner l'utilisateur à kick.");
@@ -67,6 +72,7 @@ client.on('message', async message => {
             return message.channel.send("Cet utilisateur n'est pas sur le serveur.");
         }
 
+        // Kicke le membre
         member.kick('Raison optionnelle').then(() => {
             message.reply(`${user.tag} a été kické avec succès.`);
         }).catch(err => {
@@ -74,26 +80,30 @@ client.on('message', async message => {
             message.channel.send("Une erreur s'est produite lors du kick de l'utilisateur.");
         });
     } else if (command === 'setbienvenue') {
+        // Vérifie que l'utilisateur a la permission de gérer le serveur
         if (!message.member.hasPermission('MANAGE_GUILD')) {
             return message.channel.send("Vous n'avez pas la permission de gérer le serveur.");
         }
 
+        // Vérifie si le salon a été mentionné
         const channel = message.mentions.channels.first();
         if (!channel) {
             return message.channel.send("Merci de mentionner un salon valide.");
         }
 
+        // Met à jour l'ID du salon de bienvenue
         welcomeChannelId = channel.id;
         message.channel.send(`Le salon de bienvenue a été défini sur ${channel}.`);
 
     } else if (command === 'disbienvenue') {
+        // Vérifie que l'utilisateur a la permission de gérer le serveur
         if (!message.member.hasPermission('MANAGE_GUILD')) {
             return message.channel.send("Vous n'avez pas la permission de gérer le serveur.");
         }
 
+        // Désactive la fonction de bienvenue
         welcomeChannelId = null;
         message.channel.send("La fonction de bienvenue a été désactivée.");
-        
     } else if (command === 'cat') {
         try {
             const response = await fetch('https://api.thecatapi.com/v1/images/search');
@@ -158,8 +168,7 @@ client.on('message', async message => {
             collector.on('collect', (reaction, user) => {
                 switch (reaction.emoji.name) {
                     case '➡️':
-                        embedMessage.edit(embed2
-);
+                        embedMessage.edit(embed2);
                         break;
                 }
             });
