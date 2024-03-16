@@ -139,6 +139,9 @@ client.on('message', message => {
                 }
             });
         });
+
+
+        
     } else if (command === 'unban') {
         // Vérifie que l'utilisateur a la permission de débannir des membres
         if (!message.member.hasPermission('BAN_MEMBERS')) {
