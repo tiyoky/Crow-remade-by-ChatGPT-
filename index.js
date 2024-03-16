@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const fetch = require('node-fetch');
-const { prefix, token } = require('./config.json');
+const { prefix, token, ownerID } = require('./config.json');
 
 let welcomeChannelId = null;
 
