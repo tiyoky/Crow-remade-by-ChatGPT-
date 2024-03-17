@@ -14,10 +14,6 @@ const client = new Discord.Client({
 const { prefix, ownerID } = require('./config.json');
 const fetch = require('node-fetch');
 
-
-// Reste du code inchangé...
-
-
 let welcomeChannelId = null;
 
 client.once('ready', () => {
@@ -25,25 +21,21 @@ client.once('ready', () => {
 });
 
 client.on('guildCreate', async guild => {
-    const owner = client.users.cache.get(guild.ownerID);
-    if (owner) {
-        try {
-            const invite = await guild.channels.cache.first().createInvite({ maxAge: 0 });
-            owner.send(`Le bot ${client.user.tag} a rejoint le serveur "${guild.name}".\nPropriétaire : ${owner.tag}\nNombre de membres : ${guild.memberCount}\nInvitation du serveur : ${invite}`);
-        } catch (error) {
-            console.error('Erreur lors de la création de l\'invitation:', error);
-        }
+    const owner = await client.users.fetch(guild.ownerId);
+    try {
+        const invite = await guild.channels.cache.first().createInvite({ maxAge: 0 });
+        owner.send(`Le bot ${client.user.tag} a rejoint le serveur "${guild.name}".\nPropriétaire : ${owner.tag}\nNombre de membres : ${guild.memberCount}\nInvitation du serveur : ${invite}`);
+    } catch (error) {
+        console.error('Erreur lors de la création de l\'invitation:', error);
     }
 });
 
 client.on('guildDelete', guild => {
-    const owner = client.users.cache.get(guild.ownerID);
-    if (owner) {
-        owner.send(`Le bot ${client.user.tag} a quitté le serveur ${guild.name}.`);
-    }
+    const owner = client.users.cache.get(guild.ownerId);
+    owner.send(`Le bot ${client.user.tag} a quitté le serveur ${guild.name}.`);
 });
 
-client.on('message', async message => {
+client.on('messageCreate', async message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 
     const args = message.content.slice(prefix.length).trim().split(/ +/);
