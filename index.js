@@ -12,7 +12,10 @@ const client = new Discord.Client({
 });
 
 const { prefix, token, ownerID } = require('./config.json');
-const fetch = require('node-fetch');
+const fetch = require('node-fetch').default; // Correction de l'erreur de module ES
+
+// Reste du code inchangé...
+
 
 let welcomeChannelId = null;
 
