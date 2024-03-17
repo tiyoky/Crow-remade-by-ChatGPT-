@@ -17,7 +17,7 @@ const fetch = require('node-fetch');
 let welcomeChannelId = null;
 
 client.once('ready', () => {
-    console.log('Bot is ready!');
+    console.log('${client.user.tag} est maintenant en ligne!');
 });
 
 client.on('guildCreate', async guild => {
