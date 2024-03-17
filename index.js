@@ -358,7 +358,7 @@ client.on('guildMemberAdd', member => {
     }
 });
 
-client.login(token);
+client.login(process.env.TOKEN);
 
 function parseDuration(durationString) {
     const regex = /(\d+)\s*(m|min|minute|minutes)/i;
