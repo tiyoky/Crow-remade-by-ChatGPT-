@@ -11,7 +11,7 @@ const client = new Discord.Client({
     ]
 });
 
-const { prefix, token, ownerID } = require('./config.json');
+const { prefix, ownerID } = require('./config.json');
 const fetch = require('node-fetch');
 
 
